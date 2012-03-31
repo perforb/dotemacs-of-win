@@ -481,7 +481,20 @@
             (normal-top-level-add-subdirs-to-load-path))))))
 
 ;; 引数のディレクトリとそのサブディレクトリを load-path に追加
-(add-to-load-path "elisp" "conf")
+(add-to-load-path "elisp" "conf" "plugins")
+
+;; ------------------------------------------------------------------------
+;; @ ELPA
+
+;; (install-elisp "http://bit.ly/pkg-el23")
+
+(when (require 'package nil t)
+  ;; パッケージリポジトリにMarmaladeと開発者運営のELPAを追加
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
+  ;; インストールしたパッケージにロードパスを通して読み込む
+  (package-initialize))
 
 ;; ------------------------------------------------------------------------
 ;; @ auto-install
@@ -498,6 +511,9 @@
 
 ;; ------------------------------------------------------------------------
 ;; @ key-bind
+
+;; M-/ に略語展開・補完機能を割り当て
+(define-key global-map (kbd "M-/") 'hippie-expand)
 
 ;; C-h をバックスペースに変更
 (keyboard-translate ?\C-h ?\C-?)
@@ -659,6 +675,23 @@
 (setq auto-async-byte-compile-exclude-files-regexp "/junk/")
 (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 
+;; 終了前に確認する
+(defadvice save-buffers-kill-emacs
+  (before safe-save-buffers-kill-emacs activate)
+  "safe-save-buffers-kill-emacs"
+  (unless (y-or-n-p "Really exit emacs? ")
+    (keyboard-quit)))
+
+;; sequential-command
+;; http://d.hatena.ne.jp/rubikitch/20090219/sequential_command
+;; (auto-install-batch "sequential-command")
+(require 'sequential-command-config)
+(define-sequential-command seq-home
+  back-to-indentation beginning-of-line beginning-of-buffer seq-return)
+(define-sequential-command seq-end
+  end-of-line end-of-buffer seq-return)
+(sequential-command-setup-keys)
+
 ;; ------------------------------------------------------------------------
 ;; @ anything
 
@@ -812,7 +845,7 @@
   (font-lock-add-keywords
    major-mode
    '(
-     ("  " 0 my-face-b-1 append)
+     ("　" 0 my-face-b-1 append)
      ("\t" 0 my-face-b-2 append)
      ("[ ]+$" 0 my-face-u-1 append)
      )))
@@ -827,6 +860,12 @@
 (setq eol-mnemonic-dos "(CRLF)")
 (setq eol-mnemonic-mac "(CR)")
 (setq eol-mnemonic-unix "(LF)")
+
+;; カーソル位置のフェースを調べる関数
+(defun describe-face-at-point ()
+  "Return face used at point."
+  (interactive)
+  (message "%s" (get-char-property (point) 'face)))
 
 ;; 行の折り返しトグルコマンド
 (define-key global-map (kbd "C-c r") 'toggle-truncate-lines)
@@ -860,3 +899,448 @@
 
 ;; CUA キーバインドを無効にする
 (setq cua-enable-cua-keys nil)
+
+;; ------------------------------------------------------------------------
+;; @ dired
+
+(require 'dired-x)
+
+(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+
+;; ------------------------------------------------------------------------
+;; @ igrep
+
+(require 'igrep)
+(igrep-define lgrep (igrep-use-zgrep nil)(igrep-regex-option "-n -Ou8"))
+(igrep-find-define lgrep (igrep-use-zgrep nil)(igrep-regex-option "-n -Ou8"))
+(setq igrep-find-use-xargs nil)
+
+(require 'grep-edit)
+
+;; ------------------------------------------------------------------------
+;; @ smartchr
+
+;; (install-elisp "https://raw.github.com/imakado/emacs-smartchr/master/smartchr.el")
+
+(require 'smartchr)
+(defun smartchr-custom-keybindings ()
+  (local-set-key (kbd "=") (smartchr '("=" " = " " == " " === ")))
+  ;; !! がカーソルの位置
+  (local-set-key (kbd "(") (smartchr '("(`!!')" "(")))
+  (local-set-key (kbd "[") (smartchr '("[`!!']" "[[`!!']]" "[")))
+  (local-set-key (kbd "{") (smartchr '("{`!!'}" "{\n`!!'\n}" "{")))
+  (local-set-key (kbd "`") (smartchr '("\``!!''" "\`")))
+  (local-set-key (kbd "\"") (smartchr '("\"`!!'\"" "\"")))
+  (local-set-key (kbd ">") (smartchr '(">" "->" ">>")))
+  )
+
+(defun smartchr-custom-keybindings-objc ()
+  (local-set-key (kbd "@") (smartchr '("@\"`!!'\"" "@")))
+  )
+
+(add-hook 'php-mode-hook 'smartchr-custom-keybindings)
+(add-hook 'c-mode-common-hook 'smartchr-custom-keybindings)
+(add-hook 'js2-mode-hook 'smartchr-custom-keybindings)
+(add-hook 'ruby-mode-hook 'smartchr-custom-keybindings)
+(add-hook 'cperl-mode-hook 'smartchr-custom-keybindings)
+(add-hook 'objc-mode-hook 'smartchr-custom-keybindings-objc)
+
+;; ------------------------------------------------------------------------
+;; @ yasnippet
+
+;; https://github.com/capitaomorte/yasnippet
+
+(require 'yasnippet)
+(setq yas/snippet-dirs '("~/.emacs.d/plugins/yasnippet/snippets"))
+(yas/global-mode 1)
+
+;; ------------------------------------------------------------------------
+;; @ auto-complete
+
+;; auto-complete
+;; (package-install 'auto-complete)
+
+;; company
+;; (package-install 'company)
+
+;; ac-company
+;; (install-elisp "https://raw.github.com/buzztaiki/auto-complete/master/ac-company.el")
+
+(when (require 'auto-complete-config nil t)
+  ;; (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+
+  ;; 辞書補完
+  ;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/conf/ac-dict")
+
+  ;; サンプル設定の有効化
+  (ac-config-default)
+
+  ;; 補完ウィンドウ内でのキー定義
+  (define-key ac-completing-map (kbd "C-n") 'ac-next)
+  (define-key ac-completing-map (kbd "C-p") 'ac-previous)
+  (define-key ac-completing-map (kbd "M-/") 'ac-stop)
+
+  ;; 補完が自動で起動するのを停止
+  (setq ac-auto-start t)
+
+  ;; 起動キーの設定
+  (ac-set-trigger-key "TAB")
+
+  ;; 候補の最大件数 デフォルトは 10件
+  (setq ac-candidate-max 20)
+
+  ;; 補完を開始する文字数
+  (setq ac-auto-start 1)
+
+  ;; 補完リストが表示されるまでの時間
+  (setq ac-auto-show-menu 0.2)
+
+  (defun auto-complete-init-sources ()
+    (setq ac-sources '(ac-source-yasnippet
+                       ac-source-dictionary
+                       ac-source-gtags
+                       ac-source-words-in-buffer)))
+
+  (auto-complete-init-sources)
+
+  (add-to-list 'ac-modes 'emacs-lisp-mode)
+  (add-to-list 'ac-modes 'html-mode)
+  (add-to-list 'ac-modes 'js2-mode)
+  (add-to-list 'ac-modes 'tmt-mode)
+  (add-to-list 'ac-modes 'yaml-mode)
+
+  (require 'ac-company)
+
+  ;; for emacs-lisp-mode
+  (add-hook 'emacs-lisp-mode-hook
+            '(lambda ()
+               (auto-complete-init-sources)
+               (add-to-list 'ac-sources 'ac-source-functions)
+               (add-to-list 'ac-sources 'ac-source-symbols))))
+
+;; ------------------------------------------------------------------------
+;; @ flymake
+
+(require 'flymake)
+
+;; 全てのファイルで flymakeを有効化
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+
+;; Makefile があれば利用し, なければ直接コマンドを実行する
+;; Makefile の種類を定義
+(defvar flymake-makefile-filenames
+  '("Makefile" "makefile" "GNUmakefile")
+  "File names for make.")
+
+;; Makefile がなければコマンドを直接利用するコマンドラインを生成
+(defun flymake-get-make-gcc-cmdline (source base-dir)
+  (let (found)
+    (dolist (makefile flymake-makefile-filenames)
+      (if (file-readable-p (concat base-dir "/" makefile))
+          (setq found t)))
+    (if found
+        (list "make"
+              (list "-s"
+                    "-C"
+                    base-dir
+                    (concat "CHK_SOURCES=" source)
+                    "SYNTAX_CHECK_MODE=1"
+                    "check-syntax"))
+      (list (if (string= (file-name-extension source) "c") "gcc" "g++")
+            (list "-o"
+                  "/dev/null"
+                  "-fsyntax-only"
+                  "-Wall"
+                  source)))))
+
+;; Flymake 初期化関数の生成
+(defun flymake-simple-make-gcc-init-impl
+  (create-temp-f use-relative-base-dir
+                 use-relative-source build-file-name get-cmdline-f)
+  "Create syntax check command line for a directly checked source file.
+Use CREATE-TEMP-F for creating temp copy."
+  (let* ((args nil)
+         (source-file-name buffer-file-name)
+         (buildfile-dir (file-name-directory source-file-name)))
+    (if buildfile-dir
+        (let* ((temp-source-file-name
+                (flymake-init-create-temp-buffer-copy create-temp-f)))
+          (setq args
+                (flymake-get-syntax-check-program-args
+                 temp-source-file-name
+                 buildfile-dir
+                 use-relative-base-dir
+                 use-relative-source
+                 get-cmdline-f))))
+    args))
+
+;; 初期化関数を定義
+(defun flymake-simple-make-gcc-init ()
+  (message "%s" (flymake-simple-make-gcc-init-impl
+                 'flymake-create-temp-inplace t t "Makefile"
+                 'flymake-get-make-gcc-cmdline))
+  (flymake-simple-make-gcc-init-impl
+   'flymake-create-temp-inplace t t "Makefile"
+   'flymake-get-make-gcc-cmdline))
+
+;; 拡張子 .c, .cpp, c++ などのときに上記の関数を利用する
+(add-to-list 'flymake-allowed-file-name-masks
+             '("\\.\\(?:c\\(?:pp\\|xx\\|\\+\\+\\)?\\|CC\\)\\'"
+               flymake-simple-make-gcc-init))
+
+
+;; XML 用 Flymake の設定
+(defun flymake-xml-init ()
+  (list "xmllint" (list "--valid"
+                        (flymake-init-create-temp-buffer-copy
+                         'flymake-create-temp-inplace))))
+
+
+;; HTML 用 Flymake の設定
+(defun flymake-html-init ()
+  (list "tidy" (list (flymake-init-create-temp-buffer-copy
+                      'flymake-create-temp-inplace))))
+
+(add-to-list 'flymake-allowed-file-name-masks
+             '("\\.html\\'" flymake-html-init))
+
+;; tidy error pattern
+(add-to-list 'flymake-err-line-patterns
+             '("line \\([0-9]+\\) column \\([0-9]+\\) - \\(Warning\\|Error\\): \\(.*\\)"
+               nil 1 2 4))
+
+
+;; JS 用 Flymake の初期化関数の定義
+(defun flymake-jsl-init ()
+  (list "jsl" (list "-process" (flymake-init-create-temp-buffer-copy
+                                'flymake-create-temp-inplace))))
+;; JavaScript 編集で Flymake を起動する
+(add-to-list 'flymake-allowed-file-name-masks
+             '("\\.js\\'" flymake-jsl-init))
+
+(add-to-list 'flymake-err-line-patterns
+             '("^\\(.+\\) (\\([0-9]+\\)): \\(.*warning\\|SyntaxError\\): \\(.*\\)"
+               1 2 nil 4))
+
+
+;; Ruby 用 Flymake の設定
+(defun flymake-ruby-init ()
+  (list "ruby" (list "-c" (flymake-init-create-temp-buffer-copy
+                           'flymake-create-temp-inplace))))
+
+(add-to-list 'flymake-allowed-file-name-masks
+             '("\\.rb\\'" flymake-ruby-init))
+
+(add-to-list 'flymake-err-line-patterns
+             '("\\(.*\\):(\\([0-9]+\\)): \\(.*\\)" 1 2 nil 3))
+
+
+;; Python 用 Flymake の設定
+;; (install-elisp "https://raw.github.com/seanfisk/emacs/sean/src/lib/flymake-python.el")
+(when (require 'flymake-python nil t)
+  ;; flake8 を利用する
+  (when (executable-find "flake8")
+    (setq flymake-python-syntax-checker "flake8"))
+  ;; pep8 を利用する
+  ;; (setq flymake-python-syntax-checker "pep8")
+  )
+
+;; ------------------------------------------------------------------------
+;; @ js2-mode
+
+;; インデント設定
+;; リージョン選択後 C-S-i
+(add-hook 'js2-mode-hook 'js-indent-hook)
+
+;; References
+;; http://d.hatena.ne.jp/m-hiyama/20080627/1214549228
+;; http://d.hatena.ne.jp/speg03/20091011/1255244329
+
+;; ------------------------------------------------------------------------
+;; @ perl
+
+;; perl-modeをcperl-modeのエイリアスにする
+(defalias 'perl-mode 'cperl-mode)
+
+(add-to-list 'auto-mode-alist '("\\.pl$" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.pm$" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.t$" . cperl-mode))
+
+;; cperl-modeのインデント設定
+(setq cperl-indent-level 4                         ; インデント幅を 4 にする
+      cperl-continued-statement-offset 4           ; 継続する文のオフセット
+      cperl-brace-offset -4                        ; ブレースのオフセット
+      cperl-label-offset -4                        ; label のオフセット
+      cperl-indent-parens-as-block t               ; 括弧もブロックとしてインデント
+      cperl-close-paren-offset -4                  ; 閉じ括弧のオフセット
+      cperl-tab-always-indent t                    ; TAB をインデントにする
+      cperl-indent-region-fix-constructs t
+      cperl-highlight-variables-indiscriminately t ; スカラを常にハイライトする
+      cperl-comment-column 40)
+
+;; perl-completion
+;; (install-elisp "http://www.emacswiki.org/emacs/download/perl-completion.el")
+
+(defun perl-completion-hook ()
+  (when (require 'perl-completion nil t)
+    (perl-completion-mode t)
+    (when (require 'auto-complete nil t)
+      (auto-complete-mode t)
+    ;; 補完のキーバインドを変更
+    (define-key cperl-mode-map (kbd "C-o") 'plcmp-cmd-smart-complete)
+      (make-variable-buffer-local 'ac-sources)
+      (setq ac-sources
+            '(ac-source-perl-completion)))))
+
+(add-hook  'cperl-mode-hook 'perl-completion-hook)
+
+;; ------------------------------------------------------------------------
+;; @ php
+
+;; php-mode の設定
+(when (require 'php-mode nil t)
+  (add-to-list 'auto-mode-alist '("\\.ctp\\'" . php-mode))
+  (add-to-list 'auto-mode-alist '("\\.twig\\'" . php-mode))
+  (setq php-search-url "http://jp.php.net/ja/")
+  (setq php-manual-url "http://jp.php.net/manual/ja/"))
+
+;; php-mode のインデント設定
+(defun php-indent-hook ()
+  (setq indent-tabs-mode nil)
+  (setq c-basic-offset 4)
+  ;; (c-set-offset 'case-label '+) ; switch 文の case ラベル
+  (c-set-offset 'arglist-intro '+) ; 配列の最初の要素が改行した場合
+  (c-set-offset 'arglist-close 0)) ; 配列の閉じ括弧
+
+(add-hook 'php-mode-hook 'php-indent-hook)
+
+;; php-mode の補完を強化する
+(defun php-completion-hook ()
+  (when (require 'php-completion nil t)
+    (php-completion-mode t)
+    ;; anything による補完
+    (define-key php-mode-map (kbd "C-o") 'phpcmp-complete)
+
+    (when (require 'auto-complete nil t)
+      (make-variable-buffer-local 'ac-sources)
+      (add-to-list 'ac-sources 'ac-source-php-completion)
+      (auto-complete-mode t))))
+
+(add-hook 'php-mode-hook 'php-completion-hook)
+
+
+;;
+;; CakePHP
+;;
+
+;; (install-elisp "https://raw.github.com/k1LoW/emacs-historyf/master/historyf.el")
+;; (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/cake-inflector.el")
+;; (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/cake.el")
+;; (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/ac-cake.el")
+;; (install-elisp "https://raw.github.com/k1LoW/emacs-cake2/master/cake2.el")
+;; (install-elisp "https://raw.github.com/k1LoW/emacs-cake2/master/ac-cake2.el")
+
+;; CakePHP 1 系統の emacs-cake
+(when (require 'cake nil t)
+  ;; emacs-cake の標準キーバインドを利用する
+  (cake-set-default-keymap)
+  ;; 標準で emacs-cake をオフ
+  (global-cake -1))
+
+;; CakePHP 2 系統の emacs-cake
+(when (require 'cake2 nil t)
+  ;; emacs-cake2 の標準キーバインドを利用する
+  (cake2-set-default-keymap)
+  ;; 標準で emacs-cake2 をオン
+  (global-cake2 t))
+
+;; emacs-cake を切り替えるコマンドを定義
+(defun toggle-emacs-cake ()
+  "emacs-cake と emacs-cake2 を切り替える"
+  (interactive)
+  (cond ((eq cake2 t) ; cake2 がオンであれば
+         (cake2 -1) ; cake2 をオフにして
+         (cake t)) ; cake をオンにする
+        ((eq cake t) ; cake がオンであれば
+         (cake -1) ; cake をオフにして
+         (cake2 t)) ; cake2 をオンにする
+        (t nil))) ; どちらもオフであれば何もしない
+
+;; C-c t に toggle-emacs-cake を割り当て
+(define-key cake-key-map (kbd "C-c t") 'toggle-emacs-cake)
+(define-key cake2-key-map (kbd "C-c t") 'toggle-emacs-cake)
+
+;; auto-complete, ac-cake, ac-cake2 の読み込みをチェック
+(when (and (require 'auto-complete nil t)
+           (require 'ac-cake nil t)
+           (require 'ac-cake2 nil t))
+  ;; ac-cake 用の関数定義
+  (defun ac-cake-hook ()
+    (make-variable-buffer-local 'ac-sources)
+    (add-to-list 'ac-sources 'ac-source-cake)
+    (add-to-list 'ac-sources 'ac-source-cake2))
+  ;; php-mode-hook に ac-cake 用の関数を追加
+  (add-hook 'php-mode-hook 'ac-cake-hook))
+
+;; ------------------------------------------------------------------------
+;; @ ruby
+
+;; ruby-mode のインデント設定
+(setq ;; ruby-indent-level 3      ; インデント幅を 3 に. 初期値は 2
+ ruby-deep-indent-paren-style t ; 改行時のインデントを調整する
+ ;; ruby-mode 実行時に indent-tabs-mode を設定値に変更
+ ;; ruby-indent-tabs-mode t       ; タブ文字を使用する. 初期値は nil
+ )
+
+;; 括弧の自動挿入── ruby-electric
+;; (install-elisp "https://raw.github.com/ruby/ruby/trunk/misc/ruby-electric.el")
+(require 'ruby-electric nil t)
+
+;; end に対応する行のハイライト── ruby-block
+;; M-x auto-install-from-emacswiki RET ruby-block.el
+(when (require 'ruby-block nil t)
+  (setq ruby-block-highlight-toggle t))
+
+;; インタラクティブ Ruby を利用する── inf-ruby
+;; (install-elisp "https://raw.github.com/ruby/ruby/trunk/misc/inf-ruby.el")
+(autoload 'run-ruby "inf-ruby"
+  "Run an inferior Ruby process")
+(autoload 'inf-ruby-keys "inf-ruby"
+  "Set local key defs for inf-ruby in ruby-mode")
+
+;; ruby-mode-hook 用の関数を定義
+(defun ruby-mode-hooks ()
+  (inf-ruby-keys)
+  (ruby-electric-mode t)
+  (ruby-block-mode t))
+
+;; ruby-mode-hook に追加
+(add-hook 'ruby-mode-hook 'ruby-mode-hooks)
+
+;; ------------------------------------------------------------------------
+;; @ yaml
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-hook 'yaml-mode-hook
+          '(lambda ()
+             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+;; for yaml-mode
+(add-hook 'yaml-mode-hook
+          '(lambda ()
+             (auto-complete-init-sources)
+             (setq ac-sources '(ac-source-words-in-buffer))))
+
+;; ------------------------------------------------------------------------
+;; @ markdown
+
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files" t)
+
+(add-hook 'markdown-mode-hook 'turn-on-orgtbl)
+
+(add-to-list 'auto-mode-alist '("\\.txt$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.mdwn$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.mdt$" . markdown-mode))
