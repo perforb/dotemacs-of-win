@@ -4,7 +4,7 @@
 
 This is a setting of Emacs which is included in gnupack.
 
-<http://sourceforge.jp/projects/gnupack/>
+See <http://sourceforge.jp/projects/gnupack/>
 
 # Add-On
 
@@ -116,7 +116,7 @@ This is a setting of Emacs which is included in gnupack.
 See <https://github.com/capitaomorte/yasnippet>
 
     $ mkdir ~/.emacs.d/plugins
-    $ git submodule add git://github.com/capitaomorte/yasnippet.git plugins/yasnippet
+    $ git submodule add http://github.com/capitaomorte/yasnippet.git plugins/yasnippet
     $ git commit -m "Add submodule"
 
     $ git submodule init
