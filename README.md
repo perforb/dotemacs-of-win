@@ -6,78 +6,68 @@ This is a setting of Emacs which is included in gnupack.
 
 <http://sourceforge.jp/projects/gnupack/>
 
-## Add-On
+# Add-On
 
-### auto-install
+## auto-install
 
     mkdir ~/.emacs.d/elisp
     cd ~/.emacs.d/elisp
     wget  http://www.emacswiki.org/emacs/download/auto-install.el
     M-x byte-compile-file auto-install.el
 
-### ELPA
+## ELPA
 
     mkdir ~/.emacs.d/elpa
     (install-elisp "http://bit.ly/pkg-el23")
 
-### auto-async-byte-compile
+## auto-async-byte-compile
 
     (install-elisp-from-emacswiki "auto-async-byte-compile.el")
 
-### anything
+## anything
 
     (auto-install-batch "anything")
 
-### anything-c-moccur
+## anything-c-moccur
 
     (install-elisp-from-emacswiki "color-moccur.el")
     (install-elisp "http://svn.coderepos.org/share/lang/elisp/anything-c-moccur/trunk/anything-c-moccur.el")
 
-### anything-for-tags
+## anything-for-tags
 
     (install-elisp-from-emacswiki "anything-gtags.el")
     (install-elisp-from-emacswiki "anything-exuberant-ctags.el")
 
-### redo+
+## redo+
 
     (install-elisp-from-emacswiki "redo+.el")
 
-### auto-save-buffers
+## auto-save-buffers
 
     (install-elisp "http://homepage3.nifty.com/oatu/emacs/archives/auto-save-buffers.el")
 
-### text-adjust-buffer
+## text-adjust-buffer
 
     (install-elisp "http://taiyaki.org/elisp/mell/src/mell.el")
     (install-elisp "http://taiyaki.org/elisp/text-adjust/src/text-adjust.el")
 
-#### Note
-     This domain hasn't answered now.
+### Note
+     This domain is not currently being answered.
 
-### igrep
+## igrep
 
     (install-elisp-from-emacswiki "igrep.el")
     (install-elisp-from-emacswiki "grep-edit.el")
 
-### smartchr
+## smartchr
 
     (install-elisp "https://raw.github.com/imakado/emacs-smartchr/master/smartchr.el")
 
-### sequential-command
+## sequential-command
 
     (auto-install-batch "sequential-command")
 
-### yasnippet
-<https://github.com/capitaomorte/yasnippet>
-
-    $ mkdir ~/.emacs.d/plugins
-    $ git submodule add git://github.com/capitaomorte/yasnippet.git plugins/yasnippet
-    $ git commit -m "Add submodule"
-
-    $ git submodule init
-    $ git submodule update
-
-### auto-complete
+## auto-complete
 
     ;; company
     ;; (package-install 'company)
@@ -88,7 +78,7 @@ This is a setting of Emacs which is included in gnupack.
     ;; auto-complete
     (package-install 'auto-complete)
 
-### other ELPA packages
+## other ELPA packages
 
     (package-install 'ctags)
     (package-install 'js2-mode)
@@ -97,11 +87,11 @@ This is a setting of Emacs which is included in gnupack.
     (package-install 'python-mode)
     (package-install 'yaml-mode)
 
-### perl-completion
+## perl-completion
 
     (install-elisp "http://www.emacswiki.org/emacs/download/perl-completion.el")
 
-### CakePHP
+## CakePHP
 
     (install-elisp "https://raw.github.com/k1LoW/emacs-historyf/master/historyf.el")
     (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/cake-inflector.el")
@@ -110,12 +100,24 @@ This is a setting of Emacs which is included in gnupack.
     (install-elisp "https://raw.github.com/k1LoW/emacs-cake2/master/cake2.el")
     (install-elisp "https://raw.github.com/k1LoW/emacs-cake2/master/ac-cake2.el")
 
-### Ruby
+## Ruby
 
     (install-elisp "https://raw.github.com/ruby/ruby/trunk/misc/ruby-electric.el")
     (install-elisp-from-emacswiki "ruby-block.el")
     (install-elisp "https://raw.github.com/ruby/ruby/trunk/misc/inf-ruby.el")
 
-### Markdown
+## Markdown
 
     (install-elisp "http://jblevins.org/projects/markdown-mode/markdown-mode.el")
+
+# Submodule
+
+## yasnippet
+See <https://github.com/capitaomorte/yasnippet>
+
+    $ mkdir ~/.emacs.d/plugins
+    $ git submodule add git://github.com/capitaomorte/yasnippet.git plugins/yasnippet
+    $ git commit -m "Add submodule"
+
+    $ git submodule init
+    $ git submodule update
