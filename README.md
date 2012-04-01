@@ -74,6 +74,9 @@ This is a setting of Emacs which is included in gnupack.
     $ git submodule add git://github.com/capitaomorte/yasnippet.git plugins/yasnippet
     $ git commit -m "Add submodule"
 
+    $ git submodule init
+    $ git submodule update
+
 ### auto-complete
 
     ;; company
