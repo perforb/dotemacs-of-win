@@ -71,8 +71,8 @@ This is a setting of Emacs which is included in gnupack.
 <https://github.com/capitaomorte/yasnippet>
 
     $ mkdir ~/.emacs.d/plugins
-    $ cd ~/.emacs.d/plugins
-    $ git clone https://github.com/capitaomorte/yasnippet
+    $ git submodule add git://github.com/capitaomorte/yasnippet.git plugins/yasnippet
+    $ git commit -m "Add submodule"
 
 ### auto-complete
 
