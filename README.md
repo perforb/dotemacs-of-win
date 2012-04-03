@@ -10,14 +10,16 @@ See <http://sourceforge.jp/projects/gnupack/>
 
 ## auto-install
 
-    mkdir ~/.emacs.d/elisp
-    cd ~/.emacs.d/elisp
-    wget  http://www.emacswiki.org/emacs/download/auto-install.el
+    $ mkdir ~/.emacs.d/elisp
+    $ cd ~/.emacs.d/elisp
+    $ wget  http://www.emacswiki.org/emacs/download/auto-install.el
+
     M-x byte-compile-file auto-install.el
 
 ## ELPA
 
-    mkdir ~/.emacs.d/elpa
+    $ mkdir ~/.emacs.d/elpa
+
     (install-elisp "http://bit.ly/pkg-el23")
 
 ## auto-async-byte-compile
@@ -70,10 +72,10 @@ See <http://sourceforge.jp/projects/gnupack/>
 ## auto-complete
 
     ;; company
-    ;; (package-install 'company)
+    (package-install 'company)
 
     ;; ac-company
-    ;; (install-elisp "https://raw.github.com/buzztaiki/auto-complete/master/ac-company.el")
+    (install-elisp "https://raw.github.com/buzztaiki/auto-complete/master/ac-company.el")
 
     ;; auto-complete
     (package-install 'auto-complete)
