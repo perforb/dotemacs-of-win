@@ -746,6 +746,7 @@
 
 ;; M-x install-elisp-from-emacswiki color-moccur.el
 ;; (install-elisp "http://svn.coderepos.org/share/lang/elisp/anything-c-moccur/trunk/anything-c-moccur.el")
+;; See http://d.hatena.ne.jp/IMAKADO/20080724/1216882563
 
 (when (require 'anything-c-moccur nil t)
   (setq
@@ -757,8 +758,12 @@
    anything-c-moccur-enable-auto-look-flag t
    ;; 起動時にポイントの位置の単語を初期パターンにする
    anything-c-moccur-enable-initial-pattern t)
-  ;; C-M-o に anything-c-moccur-occur-by-moccur を割り当てる
-  (global-set-key (kbd "C-M-o") 'anything-c-moccur-occur-by-moccur))
+  ;; Key bind
+  (global-set-key (kbd "M-o") 'anything-c-moccur-occur-by-moccur) ;バッファ内検索
+  (global-set-key (kbd "C-M-o") 'anything-c-moccur-dmoccur) ;ディレクトリ
+  (add-hook 'dired-mode-hook ;dired
+            '(lambda ()
+               (local-set-key (kbd "O") 'anything-c-moccur-dired-do-moccur-by-moccur))))
 
 ;;
 ;; tag
