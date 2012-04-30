@@ -11,6 +11,8 @@ See <http://sourceforge.jp/projects/gnupack/>
 
 # git on mintty
 
+> gnupack のインストール先は `c:\` であるものとします.
+
 git は gnupack 付属の mintty からインストールおよび利用します.
 eshell 上から git を利用する場合は, .ssh/config の permission が 600 とならないので push のみできません.
 なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-8.00/config.ini で設定します.
@@ -34,6 +36,9 @@ eshell 上から git を利用する場合は, .ssh/config の permission が 60
     $ mkdir .ssh
     $ cd .ssh/
     $ ssh-keygen -t rsa -f id_rsa
+
+    github に `id_rsa.pub` の内容を登録する.
+
     $ vi ~/.ssh/config
   
         Host github.com
@@ -64,7 +69,7 @@ See <https://github.com/capitaomorte/yasnippet>
 
     $ mkdir ~/.emacs.d/elisp
     $ cd ~/.emacs.d/elisp
-    $ wget  http://www.emacswiki.org/emacs/download/auto-install.el
+    $ wget http://www.emacswiki.org/emacs/download/auto-install.el
 
     M-x byte-compile-file auto-install.el
 
