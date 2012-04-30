@@ -1,10 +1,62 @@
-# Emacs Settings on Windows
+# Emacs Setting on Windows
 
-## Synopsys
-
-This is a setting of Emacs which is included in gnupack.
+This project customizes the setting of Emacs which included in gnupack.
 
 See <http://sourceforge.jp/projects/gnupack/>
+
+# About `init.el`
+
+本プロジェクトにおける `init.el` は gnupack_basic-8.00 に付属のファイルを基にカスタマイズしています.
+なお, gnupack のバージョンが異なる場合は`init.el` 内の `Customize Area` 以前の部分を修正してください.
+
+# git on mintty
+
+git は gnupack 付属の mintty からインストールおよび利用します.
+eshell 上から git を利用する場合は, .ssh/config の permission が 600 とならないので push のみできません.
+なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-7.03/config.ini で設定します.
+以下, ターミナル上での具体的な手順です.
+
+    # ミラーサイトのプロトコルを変更
+    $ vi c:/gnupack_basic-8.00/app/script/apt-cyg
+  
+        # ftp ではつながらないので http に変更
+        # mirror=ftp://mirror.mcs.anl.gov/pub/cygwin
+        mirror=http://mirror.mcs.anl.gov/pub/cygwin
+  
+    # `apt-cyg` で git をインストールおよび初期設定
+    $ bash apt-cyg install git
+    $ git config --global user.name "your_name"
+    $ git config --global user.email "your_email"
+    $ git config --global color.ui auto
+
+    # github に接続するための ssh の設定
+    $ cd ~/
+    $ mkdir .ssh
+    $ cd .ssh/
+    $ ssh-keygen -t rsa -f id_rsa
+    $ vi ~/.ssh/config
+  
+        Host github.com
+        User your_name
+        Port 22
+        Hostname github.com
+        IdentityFile ~/.ssh/id_rsa
+        TCPKeepAlive yes
+        IdentitiesOnly yes
+
+# Install
+
+    $ mv .emacs.d _.emacs.d
+    $ git clone https://github.com/perforb/gnupack-settings.git .emacs.d
+    $ rm -rf _.emacs.d
+
+# Submodule
+
+## yasnippet
+See <https://github.com/capitaomorte/yasnippet>
+
+    $ cd ~/.emacs.d/plugins 
+    $ git clone https://github.com/capitaomorte/yasnippet
 
 # Add-On
 
@@ -112,14 +164,6 @@ See <http://sourceforge.jp/projects/gnupack/>
 
     (install-elisp "http://jblevins.org/projects/markdown-mode/markdown-mode.el")
 
-# Submodule
+## multi-term
 
-## yasnippet
-See <https://github.com/capitaomorte/yasnippet>
-
-    $ mkdir ~/.emacs.d/plugins
-    $ git submodule add http://github.com/capitaomorte/yasnippet.git plugins/yasnippet
-    $ git commit -m "Add submodule"
-
-    $ git submodule init
-    $ git submodule update
+    (package-install 'multi-term)

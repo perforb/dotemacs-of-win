@@ -154,7 +154,7 @@
 
    ;; 標準フォントの設定
    ;; (set-default-font "M+2VM+IPAG circle-12")
-   (set-default-font "MigMix 2P-11")
+   ;; (set-default-font "MigMix 2P-11")
 
    ;; IME 変換時フォントの設定 (テストバージョンのみ)
    ;; (setq w32-ime-font-face "MigMix 1M")
@@ -360,45 +360,85 @@
 
 ;; ------------------------------------------------------------------------
 ;; @ tabbar
-   (require 'cl)
+
    (require 'tabbar)
 
-   ;; scratch buffer 以外をまとめてタブに表示する
-   (setq tabbar-buffer-groups-function
-         (lambda (b) (list "All Buffers")))
-   (setq tabbar-buffer-list-function
-         (lambda ()
-           (remove-if
-            (lambda (buffer)
-              (unless (string-match (buffer-name buffer) "\\(*scratch*\\|*Apropos*\\|*shell*\\|*eshell*\\|*Customize\\)")
-                (find (aref (buffer-name buffer) 0) " *"))
-              )
-            (buffer-list))))
-
-   ;; tabbar を有効にする
+   ;; tabbar有効化
    (tabbar-mode)
 
-   ;; ボタンをシンプルにする
-   (setq tabbar-home-button-enabled "")
-   (setq tabbar-scroll-right-button-enabled "")
-   (setq tabbar-scroll-left-button-enabled "")
-   (setq tabbar-scroll-right-button-disabled "")
-   (setq tabbar-scroll-left-button-disabled "")
+   ;; タブ切替にマウスホイールを使用（0：有効，-1：無効）
+   (tabbar-mwheel-mode -1)
 
-   ;; Ctrl-Tab, Ctrl-Shift-Tab でタブを切り替える
-   (dolist (func '(tabbar-mode tabbar-forward-tab tabbar-forward-group tabbar-backward-tab tabbar-backward-group))
-     (autoload func "tabbar" "Tabs at the top of buffers and easy control-tab navigation"))
-   (defmacro defun-prefix-alt (name on-no-prefix on-prefix &optional do-always)
-     `(defun ,name (arg)
-        (interactive "P")
-        ,do-always
-        (if (equal nil arg)
-            ,on-no-prefix
-          ,on-prefix)))
-   (defun-prefix-alt shk-tabbar-next (tabbar-forward-tab) (tabbar-forward-group) (tabbar-mode 1))
-   (defun-prefix-alt shk-tabbar-prev (tabbar-backward-tab) (tabbar-backward-group) (tabbar-mode 1))
-   (global-set-key [(control tab)] 'shk-tabbar-next)
-   (global-set-key [(control shift tab)] 'shk-tabbar-prev)
+   ;; タブグループを使用（t：有効，nil：無効）
+   (setq tabbar-buffer-groups-function nil)
+
+   ;; ボタン非表示
+   (dolist (btn '(tabbar-buffer-home-button
+                  tabbar-scroll-left-button
+                  tabbar-scroll-right-button))
+     (set btn (cons (cons "" nil) (cons "" nil))))
+
+   ;; タブ表示 一時バッファ一覧
+   (defvar tabbar-displayed-buffers
+     '("*scratch*" "*Messages*" "*Backtrace*" "*Colors*"
+       "*Faces*" "*Apropos*" "*Customize*" "*shell*" "*Help*")
+     "*Regexps matches buffer names always included tabs.")
+
+   ;; 作業バッファの一部を非表示
+   (setq tabbar-buffer-list-function
+         (lambda ()
+           (let* ((hides (list ?\  ?\*))
+                  (re (regexp-opt tabbar-displayed-buffers))
+                  (cur-buf (current-buffer))
+                  (tabs (delq
+                         nil
+                         (mapcar
+                          (lambda (buf)
+                            (let ((name (buffer-name buf)))
+                              (when (or (string-match re name)
+                                        (not (memq (aref name 0) hides)))
+                                buf)))
+                          (buffer-list)))))
+             (if (memq cur-buf tabs)
+                 tabs
+               (cons cur-buf tabs)))))
+
+   ;; キーバインド設定
+   (global-set-key (kbd "<C-tab>")   'tabbar-forward-tab)
+   (global-set-key (kbd "<C-S-tab>") 'tabbar-backward-tab)
+
+   ;; タブ表示欄の見た目（フェイス）
+   (set-face-attribute 'tabbar-default nil
+                       :background "gray40")
+
+   ;; 選択タブの見た目（フェイス）
+   (set-face-attribute 'tabbar-selected nil
+                       :foreground "red3"
+                       :background "#F3F2EF"
+                       :box (list
+                             :line-width 1
+                             :color "gray80"
+                             :style 'released-button)
+                       :overline "#F3F2EF"
+		       :weight 'bold
+                       :family "ＭＳ Ｐゴシック"
+                       )
+
+   ;; 非選択タブの見た目（フェイス）
+   (set-face-attribute 'tabbar-unselected nil
+                       :foreground "black"
+                       :background "#808080"
+                       :box (list
+                             :line-width 1
+                             :color "gray90"
+                             :style 'released-button)
+                       :overline "gray80"
+                       :family "ＭＳ Ｐゴシック"
+                       )
+
+   ;; タブ間隔の調整
+   (set-face-attribute 'tabbar-separator nil
+                       :height 0.1)
 
 ;; ------------------------------------------------------------------------
 ;; @ setup-cygwin
