@@ -7,7 +7,7 @@ See <http://sourceforge.jp/projects/gnupack/>
 # About `init.el`
 
 本プロジェクトにおける `init.el` は gnupack_basic-8.00 に付属のファイルを基にカスタマイズしています.
-なお, gnupack のバージョンが異なる場合は`init.el` 内の `Customize Area` 以前の部分を修正してください.
+なお, gnupack のバージョンが異なる場合は `init.el` 内の `Customize Area` 以前の部分をそのバージョンに準拠する内容に置き換えてください.
 
 # git on mintty
 
