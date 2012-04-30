@@ -13,7 +13,7 @@ See <http://sourceforge.jp/projects/gnupack/>
 
 git は gnupack 付属の mintty からインストールおよび利用します.
 eshell 上から git を利用する場合は, .ssh/config の permission が 600 とならないので push のみできません.
-なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-7.03/config.ini で設定します.
+なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-8.00/config.ini で設定します.
 以下, ターミナル上での具体的な手順です.
 
     # ミラーサイトのプロトコルを変更
