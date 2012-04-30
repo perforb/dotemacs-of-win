@@ -52,7 +52,7 @@ eshell 上から git を利用する場合は, .ssh/config の permission が 60
 # Install
 
     $ mv .emacs.d _.emacs.d
-    $ git clone https://github.com/perforb/gnupack-settings.git .emacs.d
+    $ git clone https://github.com/perforb/gnupack-setting.git .emacs.d
     $ rm -rf _.emacs.d
 
 # Submodule
