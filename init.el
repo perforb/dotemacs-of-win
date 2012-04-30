@@ -1382,7 +1382,7 @@ Use CREATE-TEMP-F for creating temp copy."
 
 (autoload 'markdown-mode "markdown-mode.el"
   "Major mode for editing Markdown files" t)
-
+(setq markdown-command "perl /home/.emacs.d/lib/Markdown.pl")
 (add-hook 'markdown-mode-hook 'turn-on-orgtbl)
 
 (add-to-list 'auto-mode-alist '("\\.txt$" . markdown-mode))

@@ -167,8 +167,20 @@ See <https://github.com/capitaomorte/yasnippet>
 
 ## Markdown
 
+### markdown-mode.el
+
     (install-elisp "http://jblevins.org/projects/markdown-mode/markdown-mode.el")
 
-## multi-term
+### Markdown
 
-    (package-install 'multi-term)
+    $ cd ~/.emacs.d/
+    $ mkdir lib
+    $ cd lib/
+    $ wget http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
+    $ unzip Markdown_1.0.1.zip
+    $ mv Markdown_1.0.1/Markdown.pl ./
+    $ rm -rf Markdown_*
+
+#### append elisp to init.el
+
+    (setq markdown-command "perl /home/.emacs.d/lib/Markdown.pl")
