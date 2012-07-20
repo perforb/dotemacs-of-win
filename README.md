@@ -7,24 +7,25 @@ See <http://sourceforge.jp/projects/gnupack/>
 # About `init.el`
 
 本プロジェクトにおける `init.el` は gnupack_basic-8.00 に付属のファイルを基にカスタマイズしています.
-なお, gnupack のバージョンが異なる場合は `init.el` 内の `Customize Area` 以前の部分をそのバージョンに準拠する内容に置き換えてください.
+なお, gnupack のバージョンが異なる場合は `init.el` 内の `Customized Area` 以前の部分をそのバージョンに準拠する内容に置き換えてください.
 
-# git on mintty
+# Git on mintty
 
 > gnupack のインストール先は `c:\` であるものとします.
 
 git は gnupack 付属の mintty からインストールおよび利用します.
-eshell 上から git を利用する場合は, .ssh/config の permission が 600 とならないので push のみできません.
-なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-8.00/config.ini で設定します.
+なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-8.00/config.ini で設定可能です.
+ちなみに eshell 上から git を利用してみたところ, .ssh/config の permission が 600 とならないので push のみできませんでした.
+
 以下, ターミナル上での具体的な手順です.
 
     # ミラーサイトのプロトコルを変更
     $ vi c:/gnupack_basic-8.00/app/script/apt-cyg
-  
+
         # ftp ではつながらないので http に変更
         # mirror=ftp://mirror.mcs.anl.gov/pub/cygwin
         mirror=http://mirror.mcs.anl.gov/pub/cygwin
-  
+
     # `apt-cyg` で git をインストールおよび初期設定
     $ bash apt-cyg install git
     $ git config --global user.name "your_name"
@@ -40,7 +41,7 @@ eshell 上から git を利用する場合は, .ssh/config の permission が 60
     github に `id_rsa.pub` の内容を登録する.
 
     $ vi ~/.ssh/config
-  
+
         Host github.com
         User your_name
         Port 22
