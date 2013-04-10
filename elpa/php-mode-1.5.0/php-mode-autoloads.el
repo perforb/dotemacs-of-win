@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (php-mode php-file-patterns) "php-mode" "php-mode.el"
-;;;;;;  (20343 12947))
+;;;;;;  (20330 62515))
 ;;; Generated autoloads from php-mode.el
 
 (defvar php-file-patterns '("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'") "\
@@ -21,7 +21,7 @@ Major mode for editing PHP code.
 
 ;;;***
 
-;;;### (autoloads nil nil ("php-mode-pkg.el") (20343 12947 681000))
+;;;### (autoloads nil nil ("php-mode-pkg.el") (20330 62515 716449))
 
 ;;;***
 

@@ -203,33 +203,33 @@
 ;; 1.0.2: New function cake-switch-testcase, cake-switch-to-controller-testcase, cake-switch-to-model-testcase, cake-switch-to-fixture, cake-open-tests-dir.
 ;; 1.0.1: Applied a patch from xcezx.
 ;; 1.0.0: CakePHP 1.2 Final Release!!! Great Work, CakePHP team!! cake.el 1.0.0 released, too!! use define-minor-mode. cake-set-app-path bug fix.
-;; 0.2.9: cake-is-controller-file縺ｧcake-lower-camelized-action-name縺茎etq縺輔ｌ縺ｦ縺�縺ｪ縺�縺薙→縺ｫ繧医ｋbug fix
-;; 0.2.8: cake-open-*-dir縺ｮ繝輔ぃ繧､繝ｫ蛟呵｣懊ｒ蠑墓焚recursive縺ｫ繧医ｊ繝�繧｣繝ｬ繧ｯ繝医Μ蜀榊ｸｰ逧�縺ｫ讀懃ｴ｢蛟呵｣懊↓縺吶ｋ繧医≧縺ｫ菫ｮ豁｣
-;; 0.2.7: cake-open-config-dir髢｢謨ｰ繧貞ｮ溯｣�
-;; 0.2.6: cake-open-behaviors-dir髢｢謨ｰ繧貞ｮ溯｣�縲Ｄake-open-components-dir髢｢謨ｰ繧貞ｮ溯｣�
-;; 0.2.5: cake-switch-to-function髢｢謨ｰ縺ｮ謖吝虚菫ｮ豁｣縲Ｄake-tail-log髢｢謨ｰ bug fix
-;; 0.2.4: cake-open-views-dir髢｢謨ｰ縺ｮ繝ｭ繧ｸ繝�繧ｯ縺ｮ菫ｮ豁｣縲Ｄake-is-model-file bug fix
-;; 0.2.3: cake-switch-to-javascript髢｢謨ｰ縺ｮregexp bug fix
-;; 0.2.2: executable-find繧貞ｰ主�･
-;; 0.2.1: cake-switch-to-function髢｢謨ｰ繧貞ｮ溯｣�
-;; 0.2.0: cake-open-*-dir繧誕nything.el蟇ｾ蠢�
-;; 0.1.9: cl蟆主�･縲Ｂnything蟆主�･縲Ｗiews/:controller/:extension/:action.ctp荳翫〒縺ｮswitch-to-view()髢｢謨ｰ縺ｮ蟇ｾ蠢�
-;; 0.1.8: views/:controller/:extension/:action.ctp荳翫〒縺ｮswitch-to-controller()髢｢謨ｰ縺ｮ蟇ｾ蠢�
-;; 0.1.7: cake-switch-to-extention髢｢謨ｰ繧辰akePHP1.2.x.x縺ｮ譖ｸ縺肴婿縺ｫ蟇ｾ蠢懊��
-;; 0.1.6: custar Idea驕ｩ逕ｨ縲Ｂpp繝�繧｣繝ｬ繧ｯ繝医Μ縺ｮ蛻､螳壹Ο繧ｸ繝�繧ｯ繧貞､画峩縲�
-;; 0.1.5: 莉ｻ諢上�ｮCakePHP繝励Ο繧ｸ繧ｧ繧ｯ繝医ョ繧｣繝ｬ繧ｯ繝医Μ蜷阪↓蟇ｾ蠢�
-;; 0.1.4: cake-tail-log縺ｮ蜀鈴聞縺ｪprogn繧貞炎髯､縲�
-;; 0.1.3: cake-tail-log髢｢謨ｰ繧貞ｮ溯｣�縲Ｄake-switch-to-model縺ｮ蜀鈴聞縺ｪif繧貞炎髯､
-;; 0.1.2: cake-set-app-path縺悟ｮ溘ヵ繧｡繧､繝ｫ縺後↑縺�繝舌ャ繝輔ぃ縺ｮ縺ｨ縺阪↓繧ｨ繝ｩ繝ｼ繧貞�ｺ縺励※縺�縺溘ヰ繧ｰ繧剃ｿｮ豁｣
-;; 0.1.1: cake-switch-to-javascript髢｢謨ｰ繧貞ｮ溯｣�縲Ｈlobal-set-key繧偵さ繝｡繝ｳ繝医い繧ｦ繝�
-;; 0.1.0: controller縺ｮ繧｢繧ｯ繧ｷ繝ｧ繝ｳ縺掲unction xxxXxxXxx()縺�縺｣縺溘→縺阪↓view繝輔ぃ繧､繝ｫ縺ｧxxx_xxx_xxx.ctp繧よ爾邏｢縺吶ｋ繧医≧縺ｫ菫ｮ豁｣
-;; 0.0.9: view繝輔ぃ繧､繝ｫ縺警xx_xxx_xxx.ctp縺�縺｣縺溘→縺阪↓cake-switch-to-controller縺ｧfunction xxxXxxXxx()繧よ爾邏｢縺吶ｋ繧医≧縺ｫ菫ｮ豁｣
-;; 0.0.8: id:xcezx Patch驕ｩ逕ｨ縲Ｄake-switch-to-view縺ｮ縺ｨ縺阪↓繝�繧｣繝ｬ繧ｯ繝医Μ縺悟ｭ伜惠縺励↑縺�蝣ｴ蜷医↓菴懈�舌☆繧九ｈ縺�縺ｫ菫ｮ豁｣
-;; 0.0.7: cake-open-helpers-dir,cake-open-layouts-dir髢｢謨ｰ繧貞ｮ溯｣�,蜷вegexp繧剃ｿｮ豁｣
-;; 0.0.6: cake-open-*-dir髢｢謨ｰ繧貞ｮ溯｣�
-;; 0.0.5: cake-switch-to-*髢｢謨ｰ縺ｧ蟇ｾ雎｡繝輔ぃ繧､繝ｫ縺後↑縺�蝣ｴ蜷医↓縲∵眠隕上ヵ繧｡繧､繝ｫ繧剃ｽ懈�舌☆繧九°縺ｩ縺�縺九ｒ蟇ｾ隧ｱ逧�縺ｫ閨槭￥繧医≧縺ｫ螟画峩
-;; 0.0.4: 蜊俶焚邉ｻ/隍�謨ｰ邉ｻ螟画鋤逕ｨ霎樊嶌繝輔ぃ繧､繝ｫ螳溯｣� cake-switch-to-model髢｢謨ｰ繧貞ｮ溯｣�
-;; 0.0.3: cake-switch-to-view髢｢謨ｰ繧辰akePHP1.1.x.x,1.2.x.x荳｡譁ｹ縺ｮ諡｡蠑ｵ蟄舌↓蟇ｾ蠢�
+;; 0.2.9: cake-is-controller-fileでcake-lower-camelized-action-nameがsetqされていないことによるbug fix
+;; 0.2.8: cake-open-*-dirのファイル候補を引数recursiveによりディレクトリ再帰的に検索候補にするように修正
+;; 0.2.7: cake-open-config-dir関数を実装
+;; 0.2.6: cake-open-behaviors-dir関数を実装。cake-open-components-dir関数を実装
+;; 0.2.5: cake-switch-to-function関数の挙動修正。cake-tail-log関数 bug fix
+;; 0.2.4: cake-open-views-dir関数のロジックの修正。cake-is-model-file bug fix
+;; 0.2.3: cake-switch-to-javascript関数のregexp bug fix
+;; 0.2.2: executable-findを導入
+;; 0.2.1: cake-switch-to-function関数を実装
+;; 0.2.0: cake-open-*-dirをanything.el対応
+;; 0.1.9: cl導入。anything導入。views/:controller/:extension/:action.ctp上でのswitch-to-view()関数の対応
+;; 0.1.8: views/:controller/:extension/:action.ctp上でのswitch-to-controller()関数の対応
+;; 0.1.7: cake-switch-to-extention関数をCakePHP1.2.x.xの書き方に対応。
+;; 0.1.6: custar Idea適用。appディレクトリの判定ロジックを変更。
+;; 0.1.5: 任意のCakePHPプロジェクトディレクトリ名に対応
+;; 0.1.4: cake-tail-logの冗長なprognを削除。
+;; 0.1.3: cake-tail-log関数を実装。cake-switch-to-modelの冗長なifを削除
+;; 0.1.2: cake-set-app-pathが実ファイルがないバッファのときにエラーを出していたバグを修正
+;; 0.1.1: cake-switch-to-javascript関数を実装。global-set-keyをコメントアウト
+;; 0.1.0: controllerのアクションがfunction xxxXxxXxx()だったときにviewファイルでxxx_xxx_xxx.ctpも探索するように修正
+;; 0.0.9: viewファイルがxxx_xxx_xxx.ctpだったときにcake-switch-to-controllerでfunction xxxXxxXxx()も探索するように修正
+;; 0.0.8: id:xcezx Patch適用。cake-switch-to-viewのときにディレクトリが存在しない場合に作成するように修正
+;; 0.0.7: cake-open-helpers-dir,cake-open-layouts-dir関数を実装,各regexpを修正
+;; 0.0.6: cake-open-*-dir関数を実装
+;; 0.0.5: cake-switch-to-*関数で対象ファイルがない場合に、新規ファイルを作成するかどうかを対話的に聞くように変更
+;; 0.0.4: 単数系/複数系変換用辞書ファイル実装 cake-switch-to-model関数を実装
+;; 0.0.3: cake-switch-to-view関数をCakePHP1.1.x.x,1.2.x.x両方の拡張子に対応
 
 ;;; TODO
 ;;

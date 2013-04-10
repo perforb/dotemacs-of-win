@@ -1,44 +1,44 @@
 ;;
 ;; auto-save-buffers.el
 ;;
-;; ｸｵ､ﾎ･ｳ｡ｼ･ﾉ､ﾏｻｳｲｬｹ鏸�ｻ皃ｬｽ､､ﾆ､ｯ､ﾀ､ｵ､ﾃ､ｿ (ELF:01128)
+;; ¸µ¤Υ³¡¼¥ɤϻ³²¬¹îÈþ»᤬½񤤤Ƥ¯¤À¤µ¤ä¿ (ELF:01128)
 ;;
-;; ｻﾈ､､ﾊ�:
+;; »Ȥ¤Êý:
 ;;
 ;;   (require 'auto-save-buffers)
-;;   (run-with-idle-timer 0.5 t 'auto-save-buffers) ; ･｢･､･ﾉ･�0.5ﾉﾃ､ﾇﾊﾝﾂｸ
+;;   (run-with-idle-timer 0.5 t 'auto-save-buffers) ; ¥¢¥¤¥ɥë0.5ÉäÇÊÝ¸
 ;;
-;; auto-save-buffers ､ﾎ on/off ､ﾚ､�ﾂﾘ､ｨ､�､ｿ､皃ﾎ･ｭ｡ｼﾄ�ｵﾁ (C-x a s)
+;; auto-save-buffers ¤Î on/off ¤òÀڤêÂؤ¨¤뤿¤á¤Υ­¡¼ÄêµÁ (C-x a s)
 ;;
 ;;   (define-key ctl-x-map "as" 'auto-save-buffers-toggle)
 ;;
 
-;; 2005-01-16 02:55:33 ･ﾕ･｡･､･�ﾊﾝﾂｸｻ�､ﾎ･皈ﾃ･ｻ｡ｼ･ｸ､ﾐ､ｵ､ﾊ､､､隍ｦ､ﾋﾊﾑｹｹ by okuyama
+;; 2005-01-16 02:55:33 ¥ե¡¥¤¥ëÊÝ¸»þ¤Υá¥å»¡¼¥¸¤ò½Фµ¤ʤ¤¤褦¤ËÊѹ¹ by okuyama
 
-;; auto-save-buffers ､ﾇﾂﾐｾﾝ､ﾈ､ｹ､�･ﾕ･｡･､･�ﾌｾ､ﾎﾀｵｵｬﾉｽｸｽ
+;; auto-save-buffers ¤ÇÂоݤȤ¹¤ë¥ե¡¥¤¥ë̾¤ÎÀµµ¬ɽ¸½
 (defvar auto-save-buffers-regexp ""
   "*Regexp that matches `buffer-file-name' to be auto-saved.")
 
-;; auto-save-buffers ､ﾇｽ�ｳｰ､ｹ､�･ﾕ･｡･､･�ﾌｾ､ﾎﾀｵｵｬﾉｽｸｽ
+;; auto-save-buffers ¤ǽü³°¤¹¤ë¥ե¡¥¤¥ë̾¤ÎÀµµ¬ɽ¸½
 (defvar auto-save-buffers-exclude-regexp "^$"
   "*Regexp that matches `buffer-file-name' not to be auto-saved.")
 
 ;;
-;; ､｢､�､､､ﾏ auto-save-buffers ､ﾎｰ惞ﾇﾀｵｵｬﾉｽｸｽ､ﾘﾄ熙ｹ､�､ｳ､ﾈ､筅ﾇ､ｭ､�
+;; ¤¢¤뤤¤Ï auto-save-buffers ¤ΰú¿ô¤ÇÀµµ¬ɽ¸½¤ò»ØÄꤹ¤뤳¤Ȥâ¤Ǥ­¤ë
 ;;
 ;; (require 'auto-save-buffers)
-;; (run-with-idle-timer 0.5 t 'auto-save-buffers "\\.c$" "^$") ; .c ､ﾀ､ｱﾂﾐｾﾝ
-;; (run-with-idle-timer 0.5 t 'auto-save-buffers ""   "\\.h$") ; .h ､ﾀ､ｱｽ�ｳｰ
+;; (run-with-idle-timer 0.5 t 'auto-save-buffers "\\.c$" "^$") ; .c ¤À¤±ÂоÝ
+;; (run-with-idle-timer 0.5 t 'auto-save-buffers ""   "\\.h$") ; .h ¤À¤±½ü³°
 ;;
 
-;; nil ､ﾊ､鬣ｻ｡ｼ･ﾖ､ｷ､ﾊ､､ (･ｿ･､･ﾞ｡ｼ､ﾏｲﾃ､ｿ､ﾞ､ﾞ)
+;; nil ¤ʤ饻¡¼¥֤·¤ʤ¤ (¥¿¥¤¥ޡ¼¤ϲó¤ä¿¤ޤÞ)
 (defvar auto-save-buffers-active-p t
   "If non-nil, `auto-save-buffers' saves buffers.")
 
-;; ･ｪ･�･ｸ･ﾊ･�､ﾎ write-region ､猜�
+;; ¥ª¥ꥸ¥ʥë¤Î write-region ¤òÂàÈò
 (fset 'original-write-region (symbol-function 'write-region))
 
-;; ･皈ﾃ･ｻ｡ｼ･ｸ､ﾐ､ｵ､ﾊ､､ write-region ､鋿ｮ
+;; ¥á¥å»¡¼¥¸¤ò½Фµ¤ʤ¤ write-region ¤òºîÀ®
 (defun auto-save-buffers-write-region (start end filename &optional append
                                              visit lockname mustbenew)
   (original-write-region start end filename append
@@ -46,7 +46,7 @@
                                ((not visit) nil)
                                (t 'BeQuiet)) lockname mustbenew))
 
-;; ｾﾊﾎｬｲﾄﾇｽ､ﾎｰ惞ﾇ｡｢include/exclude ﾍﾑ､ﾎﾀｵｵｬﾉｽｸｽ､ﾘﾄ熙ﾇ､ｭ､�
+;; ¾Êά²Äǽ¤ΰú¿ô¤ǡ¢include/exclude ÍѤÎÀµµ¬ɽ¸½¤ò»ØÄê¤Ǥ­¤ë
 (defun auto-save-buffers (&rest regexps)
   "Save buffers if `buffer-file-name' matches `auto-save-buffers-regexp'."
   (let ((include-regexp (or (car  regexps) auto-save-buffers-regexp))
@@ -63,7 +63,7 @@
                        (not buffer-read-only)
                        (string-match include-regexp buffer-file-name)
                        (not (string-match exclude-regexp buffer-file-name))
-                       (not (buffer-base-buffer)) ;; ｴ�･ﾐ･ﾃ･ﾕ･｡､ﾎ､ﾟﾊﾝﾂｸ
+                       (not (buffer-base-buffer)) ;; ´ðÄì¥Хåե¡¤ΤßÊÝ¸
                        (file-writable-p buffer-file-name))
               (basic-save-buffer)
               (set-visited-file-modtime)
@@ -71,8 +71,8 @@
             (setq buffers (cdr buffers))))
       (fset 'write-region (symbol-function 'original-write-region)))))
 
-;; auto-save-buffers ､ﾎ on/off ､ﾈ･ｰ･�､ﾇﾀﾚ､�ﾂﾘ､ｨ､�
-;; Based on the code by Yoshihiro (､､､荀ﾊﾆ�ｵｭ 2004-03-23)
+;; auto-save-buffers ¤Î on/off ¤ò¥ȥ°¥ë¤ÇÀڤêÂؤ¨¤ë
+;; Based on the code by Yoshihiro (¤¤¤ä¤ÊÆüµ­ 2004-03-23)
 (defun auto-save-buffers-toggle ()
   "Toggle `auto-save-buffers'"
   (interactive)
@@ -84,8 +84,8 @@
     (message "auto-save-buffers off")))
 
 ;;
-;; Emacs 21 ｰﾊｹﾟ､ﾇ Makefile ､ﾎﾊﾔｽｸｻ�､ﾋ "Suspicious line XXX. Save anyway"
-;; ､ﾈ､､､ｦ･ﾗ･愠ﾗ･ﾈ､ﾐ､ｵ､ﾊ､､､隍ｦ､ﾋ､ｹ､�､ｿ､皃ﾎ､ｪ､ﾞ､ｸ､ﾊ､､
+;; Emacs 21 °ʹߤÇ Makefile ¤ÎÊԽ¸»þ¤Ë "Suspicious line XXX. Save anyway"
+;; ¤Ȥ¤¤¦¥ץí¥ó¥ץȤò½Фµ¤ʤ¤¤褦¤ˤ¹¤뤿¤á¤Τª¤ޤ¸¤ʤ¤
 ;;
 (add-hook 'makefile-mode-hook
           (function (lambda ()

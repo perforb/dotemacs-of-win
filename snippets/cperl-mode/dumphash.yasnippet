@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: dumphash
+# --
+map { print "$_ => \$${1:hash_ref}->{$_}\n" } keys %{ \$${2:hash_ref} };

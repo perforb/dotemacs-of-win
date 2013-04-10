@@ -3,6 +3,11 @@
 ;;; Code:
 
 
+;;;### (autoloads nil nil ("popup-pkg.el" "popup.el") (20330 63656
+;;;;;;  48346))
+
+;;;***
+
 (provide 'popup-autoloads)
 ;; Local Variables:
 ;; version-control: never

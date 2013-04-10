@@ -1,30 +1,33 @@
-# Emacs Setting on Windows
+# gnupack settings
 
 This project customizes the setting of Emacs which included in gnupack.
 
 See <http://sourceforge.jp/projects/gnupack/>
 
-# About `init.el`
+# gnupack's VERSION
 
-本プロジェクトにおける `init.el` は gnupack_basic-8.00 に付属のファイルを基にカスタマイズしています.
-なお, gnupack のバージョンが異なる場合は `init.el` 内の `Customized Area` 以前の部分をそのバージョンに準拠する内容に置き換えてください.
+11.00
 
-# Git on mintty
+# Installation of git for mintty
 
-> gnupack のインストール先は `c:\` であるものとします.
+git は gnupack 付属の mintty からインストールおよび利用します。なお、gnupack のインストール先は `c:\` であるものとします。
+また、mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-11.00/config.ini で設定可能です。
+ちなみに eshell 上から git を利用してみたところ、.ssh/config の permission が 600 とならないので push のみできませんでした。
 
-git は gnupack 付属の mintty からインストールおよび利用します.
-なお, mintty 自体のカスタマイズは ~/.minttyrc ではなく c:/gnupack_basic-8.00/config.ini で設定可能です.
-ちなみに eshell 上から git を利用してみたところ, .ssh/config の permission が 600 とならないので push のみできませんでした.
+以下、ターミナル上での具体的な手順。
 
-以下, ターミナル上での具体的な手順です.
+    # プロンプトの表示をシンプルにするために .bashrc の custom_prompt_command を以下のように変更
 
-    # ミラーサイトのプロトコルを変更
-    $ vi c:/gnupack_basic-8.00/app/script/apt-cyg
-
-        # ftp ではつながらないので http に変更
-        # mirror=ftp://mirror.mcs.anl.gov/pub/cygwin
-        mirror=http://mirror.mcs.anl.gov/pub/cygwin
+    function custom_prompt_command {
+        typeset _Retv=$?
+        typeset _PromptColor=""
+        if [[ ${_Retv} -eq 0 ]] ; then
+            _PromptColor=$BASH_PROMPT_OK
+        else 
+            _PromptColor=$BASH_PROMPT_NG
+        fi
+        export PS1="\[${_PromptColor}\] \w# \[\e[0m\]"
+    }
 
     # `apt-cyg` で git をインストールおよび初期設定
     $ bash apt-cyg install git
@@ -38,7 +41,7 @@ git は gnupack 付属の mintty からインストールおよび利用しま�
     $ cd .ssh/
     $ ssh-keygen -t rsa -f id_rsa
 
-    github に `id_rsa.pub` の内容を登録する.
+    github に `id_rsa.pub` の内容を登録する。
 
     $ vi ~/.ssh/config
 
@@ -49,139 +52,3 @@ git は gnupack 付属の mintty からインストールおよび利用しま�
         IdentityFile ~/.ssh/id_rsa
         TCPKeepAlive yes
         IdentitiesOnly yes
-
-# Install
-
-    $ mv .emacs.d _.emacs.d
-    $ git clone https://github.com/perforb/gnupack-setting.git .emacs.d
-    $ rm -rf _.emacs.d
-
-# Submodule
-
-## yasnippet
-See <https://github.com/capitaomorte/yasnippet>
-
-    $ cd ~/.emacs.d/plugins 
-    $ git clone https://github.com/capitaomorte/yasnippet
-
-# Add-On
-
-## auto-install
-
-    $ mkdir ~/.emacs.d/elisp
-    $ cd ~/.emacs.d/elisp
-    $ wget http://www.emacswiki.org/emacs/download/auto-install.el
-
-    M-x byte-compile-file auto-install.el
-
-## ELPA
-
-    $ mkdir ~/.emacs.d/elpa
-
-    (install-elisp "http://bit.ly/pkg-el23")
-
-## auto-async-byte-compile
-
-    (install-elisp-from-emacswiki "auto-async-byte-compile.el")
-
-## anything
-
-    (auto-install-batch "anything")
-
-## anything-c-moccur
-
-    (install-elisp-from-emacswiki "color-moccur.el")
-    (install-elisp "http://svn.coderepos.org/share/lang/elisp/anything-c-moccur/trunk/anything-c-moccur.el")
-
-## anything-for-tags
-
-    (install-elisp-from-emacswiki "anything-gtags.el")
-    (install-elisp-from-emacswiki "anything-exuberant-ctags.el")
-
-## redo+
-
-    (install-elisp-from-emacswiki "redo+.el")
-
-## auto-save-buffers
-
-    (install-elisp "http://homepage3.nifty.com/oatu/emacs/archives/auto-save-buffers.el")
-
-## text-adjust-buffer
-
-    (install-elisp "http://taiyaki.org/elisp/mell/src/mell.el")
-    (install-elisp "http://taiyaki.org/elisp/text-adjust/src/text-adjust.el")
-
-### Note
-     This domain is not currently being answered.
-
-## igrep
-
-    (install-elisp-from-emacswiki "igrep.el")
-    (install-elisp-from-emacswiki "grep-edit.el")
-
-## smartchr
-
-    (install-elisp "https://raw.github.com/imakado/emacs-smartchr/master/smartchr.el")
-
-## sequential-command
-
-    (auto-install-batch "sequential-command")
-
-## auto-complete
-
-    ;; company
-    (package-install 'company)
-
-    ;; ac-company
-    (install-elisp "https://raw.github.com/buzztaiki/auto-complete/master/ac-company.el")
-
-    ;; auto-complete
-    (package-install 'auto-complete)
-
-## other ELPA packages
-
-    (package-install 'ctags)
-    (package-install 'js2-mode)
-    (package-install 'haml-mode)
-    (package-install 'php-mode)
-    (package-install 'python-mode)
-    (package-install 'yaml-mode)
-
-## perl-completion
-
-    (install-elisp "http://www.emacswiki.org/emacs/download/perl-completion.el")
-
-## CakePHP
-
-    (install-elisp "https://raw.github.com/k1LoW/emacs-historyf/master/historyf.el")
-    (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/cake-inflector.el")
-    (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/cake.el")
-    (install-elisp "https://raw.github.com/k1LoW/emacs-cake/master/ac-cake.el")
-    (install-elisp "https://raw.github.com/k1LoW/emacs-cake2/master/cake2.el")
-    (install-elisp "https://raw.github.com/k1LoW/emacs-cake2/master/ac-cake2.el")
-
-## Ruby
-
-    (install-elisp "https://raw.github.com/ruby/ruby/trunk/misc/ruby-electric.el")
-    (install-elisp-from-emacswiki "ruby-block.el")
-    (install-elisp "https://raw.github.com/ruby/ruby/trunk/misc/inf-ruby.el")
-
-## Markdown
-
-### markdown-mode.el
-
-    (install-elisp "http://jblevins.org/projects/markdown-mode/markdown-mode.el")
-
-### Markdown
-
-    $ cd ~/.emacs.d/
-    $ mkdir lib
-    $ cd lib/
-    $ wget http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-    $ unzip Markdown_1.0.1.zip
-    $ mv Markdown_1.0.1/Markdown.pl ./
-    $ rm -rf Markdown_*
-
-#### append elisp to init.el
-
-    (setq markdown-command "perl /home/.emacs.d/lib/Markdown.pl")

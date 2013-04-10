@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (py-shell-complete) "python-mode" "python-mode.el"
-;;;;;;  (20343 12957))
+;;;;;;  (20336 38358))
 ;;; Generated autoloads from python-mode.el
 
 (autoload 'py-shell-complete "python-mode" "\
@@ -15,7 +15,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads nil nil ("highlight-indentation.el" "python-mode-pkg.el")
-;;;;;;  (20343 12959 572000))
+;;;;;;  (20336 38359 334746))
 
 ;;;***
 

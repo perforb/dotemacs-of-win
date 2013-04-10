@@ -1,7 +1,7 @@
 ;;; igrep.el --- An improved interface to `grep` and `find`
 ;;; -*-coding: iso-latin-1;-*-
 
-;; Copyright ﾂｩ 1993-1998,2000-2005 Kevin Rodgers
+;; Copyright © 1993-1998,2000-2005 Kevin Rodgers
 
 ;; Author: Kevin Rodgers <ihs_4664@yahoo.com>
 ;; Created:  22 Jun 1993

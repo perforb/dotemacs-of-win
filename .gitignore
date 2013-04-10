@@ -1,11 +1,4 @@
 .git
 *.elc
-!.gitignore
-src/
-url/
-auto-save-list
+.session.dat
 ac-comphist.dat
-ede-projects.el
-newsticker
-*history
-tramp

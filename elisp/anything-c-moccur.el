@@ -813,4 +813,4 @@ nilなら使用しない"
 
 (provide 'anything-c-moccur)
 
-;;; anything-c-moccur.el ends hered
+;;; anything-c-moccur.el ends here

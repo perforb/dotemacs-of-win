@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: today
+# key: today
+# --
+=== `(insert-current-date)` ===
+

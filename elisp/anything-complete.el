@@ -1,7 +1,7 @@
 ;;; anything-complete.el --- completion with anything
 ;; $Id: anything-complete.el,v 1.86 2010-03-31 23:14:13 rubikitch Exp $
 
-;; Copyright (C) 2008, 2009, 2010, 2011 rubikitch
+;; Copyright (C) 2008, 2009, 2010 rubikitch
 
 ;; Author: rubikitch <rubikitch@ruby-lang.org>
 ;; Keywords: matching, convenience, anything
@@ -118,6 +118,17 @@
 (require 'thingatpt)
 (require 'anything-obsolete)
 
+;; version check
+(let ((version "1.263"))
+  (when (and (string= "1." (substring version 0 2))
+             (string-match "1\.\\([0-9]+\\)" anything-version)
+             (< (string-to-number (match-string 1 anything-version))
+                (string-to-number (substring version 2))))
+    (error "Please update anything.el!!
+
+http://www.emacswiki.org/cgi-bin/wiki/download/anything.el
+
+or  M-x install-elisp-from-emacswiki anything.el")))
 
 ;; (@* "overlay")
 (when (require 'anything-show-completion nil t)
@@ -257,11 +268,7 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
             (with-current-buffer anything-current-buffer
               (save-excursion
                 (backward-char (string-width anything-complete-target))
-                (max 0
-                     (- (alcs-current-physical-column)
-                        (if (buffer-local-value 'anything-enable-shortcuts (get-buffer anything-buffer))
-                            4           ;length of shortcut overlay
-                          0)))))))
+                (alcs-current-physical-column)))))
   (mapcar (lambda (cand) (cons (concat (make-string alcs-physical-column-at-startup ? ) cand) cand))
           candidates))
 
@@ -365,9 +372,7 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
     anything-c-source-complete-emacs-faces))
 
 (defvar anything-apropos-sources
-  '(anything-c-source-emacs-function-at-point
-    anything-c-source-emacs-variable-at-point
-    anything-c-source-apropos-emacs-commands
+  '(anything-c-source-apropos-emacs-commands
     anything-c-source-apropos-emacs-functions
     anything-c-source-apropos-emacs-variables
     anything-c-source-apropos-emacs-faces))
@@ -838,10 +843,6 @@ So, (anything-read-string-mode 1) and
      (candidates-in-buffer)
      (action . identity)
      (update . alcs-make-candidates)
-     (persistent-action . alcs-describe-function))
-    ((name . "New Command")
-     (dummy)
-     (action . identity)
      (persistent-action . alcs-describe-function))))
 
 ;; (with-current-buffer " *command symbols*" (erase-buffer))
@@ -850,20 +851,19 @@ So, (anything-read-string-mode 1) and
   (interactive)
   (setq alcs-this-command this-command)
   (let* ((cmd (anything
-               (if (and anything-execute-extended-command-use-kyr
-                        (require 'anything-kyr-config nil t))
-                   (cons anything-c-source-kyr
-                         anything-execute-extended-command-sources)
-                 anything-execute-extended-command-sources))))
-    (unless (and cmd (commandp (intern-soft cmd)))
-      (error "No command: %s" cmd))
-    (setq extended-command-history (cons cmd (delete cmd extended-command-history)))
-    (setq cmd (intern cmd))
-    (if (or (stringp (symbol-function cmd))
-            (vectorp (symbol-function cmd)))
-        (execute-kbd-macro (symbol-function cmd))
-      (setq this-command cmd)
-      (call-interactively cmd))))
+              (if (and anything-execute-extended-command-use-kyr
+                       (require 'anything-kyr-config nil t))
+                  (cons anything-c-source-kyr
+                        anything-execute-extended-command-sources)
+                anything-execute-extended-command-sources))))
+    (when cmd
+      (setq extended-command-history (cons cmd (delete cmd extended-command-history)))
+      (setq cmd (intern cmd))
+      (if (or (stringp (symbol-function cmd))
+              (vectorp (symbol-function cmd)))
+          (execute-kbd-macro (symbol-function cmd))
+        (setq this-command cmd)
+        (call-interactively cmd)))))
 
 (add-hook 'after-init-hook 'alcs-make-candidates)
 
