@@ -8,6 +8,9 @@ See <http://sourceforge.jp/projects/gnupack/>
 
 11.00
 
+# byte compile
+M-x byte-recompile-directory
+
 # Installation of git for mintty
 
 git は gnupack 付属の mintty からインストールおよび利用します。なお、gnupack のインストール先は `c:\` であるものとします。
