@@ -11,7 +11,6 @@ M-x byte-recompile-directory
 
 # Installation of git
 
-- gnupack のインストール先は `c:/` であるものとする
 - 使用するターミナルは gnupack 付属の mintty
 - mintty 自体のカスタマイズは、 ~/.minttyrc ではなく %GNUPACK_HOME%/config.ini で設定可能
 
