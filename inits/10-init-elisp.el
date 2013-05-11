@@ -485,8 +485,8 @@
         (exchange-point-and-mark))
     (error "Mark is not active. Region not duplicated.")))
 
-(global-set-key (kbd "<M-s-up>") 'duplicate-line-backward)
-(global-set-key (kbd "<M-s-down>") 'duplicate-line-forward)
+(global-set-key (kbd "<M-up>") 'duplicate-line-backward)
+(global-set-key (kbd "<M-down>") 'duplicate-line-forward)
 
 ;; ------------------------------------------------------------------------
 ;; @speedbar
